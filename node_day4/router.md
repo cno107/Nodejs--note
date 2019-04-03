@@ -3,15 +3,22 @@
 https://www.jianshu.com/p/2cb44dbe5de8
 
 ```javascript
-//GET
-app.get( '/' , fnciton( req,res){
-    res.send('');
-})
+//app.js
+var express = require('express');
+var app = express();
+var router = require('./router');   //引用那个文件(即module.exports)
 
-//Post
-app.get( '/' , fnciton( req,res){
-    res.send('');
-})
+ app.use(router);       //use他。  获取直接app.use(require('./router')); 
+```
+
+```javascript
+//router.js
+var express = require('express');
+const router = express.Router()     //express里面有一个Router()方法
+
+router.get('/', function (request, respond) {})  //全用router
+
+module.exports = router;       //导出去
 ```
 
 ### use

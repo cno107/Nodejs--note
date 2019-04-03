@@ -12,7 +12,7 @@
 - 所以对于：`moudle.exports.xxx = xxx` 的方式 完全可以：`expots.xxx = xxx`
 - 当一个模块需要导出单个成员的时候，这个时候必须使用：`module.exports = xxx` 的方式
 - 不要使用 `exports = xxx` 不管用
-- 因为每个模块最终向外 `return` 的是 `module.exports`
+- 因为每个模块最终向外 `return` 的是 `module.exports`   <---------------
 - 而 `exports` 只是 `module.exports` 的一个引用
 - 所以即便你为 `exports = xx` 重新赋值，也不会影响 `module.exports`
 - 但是有一种赋值方式比较特殊：`exports = module.exports` 这个用来重新建立引用关系的
