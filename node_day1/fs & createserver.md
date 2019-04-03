@@ -4,7 +4,9 @@
 
 ​    fs.readeFile('a.txt',function(error , data ){ });
 
-​    fs.
+    ```
+ fs.readeFile('a.txt',  'utf8 '   ,function(error , data ){ });   可选参数可代替data.toString
+    ```
 
 ```javascript
 var fs = require('fs')
