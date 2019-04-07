@@ -249,17 +249,5 @@ exports.delete = function (id,cb) {
    })
 }
 
-module.exports = exports;  //给他们导出去
+module.exports = exports;  //给他们导出
 ```
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
