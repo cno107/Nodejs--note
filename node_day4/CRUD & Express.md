@@ -118,7 +118,139 @@ var stu = students.find(function (item) {
                 new[key] = old[key];
          }             
 ```
++ 第二段階　(编写上层调用)
+```javascript
+ //查看文件
+ //参数只传一个cb就可以(readfile异步)用于在查找完之后 再1.判断error 2.render
+  studentJS.find(function (error,data) {})
+  
+//保存数据
+//第一个para传需要保存的数据
+//第二个para传cb用于判断error 和 redirect
+studentJS.save(req.body,function (error) {});
 
+//特定id找学生(用于渲染更改界面)
+//第一个para传id
+//第二个para传cb用于1.判断error 2.render
+ studentJS.findById(req.query.id,function (error,data) {})
+ 
+//修改(在数据库)特定id的学生信息
+//第一个para传 被post提交的(改过的)学生信息（obj）
+//第二个para传cb用于判断error 和 redirect
+ studentJS.updateById(req.body,function (error) {})
+ 
+//删除
+//第一个para传id
+//第二个para传cb用于1.判断error 2.redirect
+ studentJS.delete(req.query.id,function (error) {})
+```
+## student.js  (用来实现CRUD各个函数)
+```javascript
+//查看文件
+exports.find = function (findCb) {
+   fs.readFile('./db.json','utf8',function (error,data) {
+        if(error){
+          return findCb(error,null)   //这俩参是回调函数里的参数 前判断 后渲染
+        }else{
+          return  findCb(null,JSON.parse(data).students);
+        }
+    })
+}
+
+//保存数据
+exports.save = function (stuData,cb) {
+    fs.readFile('./db.json','utf8',function (error,data) {
+        if(error){
+            return cb(error)
+        }
+        var students = JSON.parse(data).students; //取出全部
+        var length = students.length+1
+        stuData.index = length.toString();
+
+        students.push(stuData); //加进去
+        var reData = JSON.stringify({students:students})
+        fs.writeFile('./db.json',reData,function () {
+            if(error){
+                return cb(error);
+            }
+            cb(null);
+        });
+
+    })
+}
+
+//查看特定ID学生信息
+exports.findById =function(id,cb) {
+    fs.readFile('./db.json', 'utf8', function (error, data) {
+        if (error) {
+            return cb(error)
+        }
+        var students = JSON.parse(data).students;
+        var ret = students.find(function (item) {
+            return item.index === id
+        })
+        // console.log(ret);
+        cb(error, ret)
+    })
+
+}
+
+//更新
+exports.updateById = function (student,cb) {
+
+    fs.readFile('./db.json','utf8',function (error,data) {
+        if(error){
+            return cb(error,null)
+        }else{
+            var students = JSON.parse(data).students;
+            //上面 是一个arr
+       var stu = students.find(function (item) {
+                return item.index === student.index
+           //左右index均为obj
+       })
+            // console.log(stu);
+            for(var key in student){
+               stu[key] = student[key];
+        }
+        //此时stu(总数据中的一组数组)被更改 所以整体数据也发生了变化
+            var reData = JSON.stringify({students:students})
+            fs.writeFile('./db.json',reData,function () {
+                if(error){
+                    return cb(error);
+                }
+                cb(null);
+            });
+
+        }
+    })
+}
+
+//删除
+exports.delete = function (id,cb) {
+   fs.readFile('./db.json','utf8',function (error,data) {
+       if(error){
+           return cb(error)
+       }
+       var students = JSON.parse(data).students
+       //findIndex ES6 (return下标)
+    var deleteId = students.findIndex(function (item) {
+        return item.id === parseInt(id)
+    })
+       students.splice(deleteId,1);
+       var fileData = JSON.stringify({
+           students:students
+       })
+       fs.writeFile('./db.json',fileData,function (error) {
+           if(error){
+               return cb(error)
+           }
+           return cb(null);
+       })
+   })
+}
+
+module.exports = exports;  //给他们导出去
+```
 
   
 
