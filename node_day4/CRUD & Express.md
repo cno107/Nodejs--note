@@ -57,7 +57,7 @@ app.listen(3333,function () {
 var express = require('express');
 const router = express.Router()   //相当于往express.Router()中加get/post
 var fs = require('fs');
-var studentJS = require('./student');  //引用自定义模块(用它的方法)
+var studentJS = require('./student');  //引用自定义模块(用它的方法) 全用它调用
     
 router.get('/', function (request, respond) {
        //(带数据)渲染界面
@@ -114,8 +114,8 @@ var stu = students.find(function (item) {
                 return item.index === 目标
            //左右index均为obj
        }) 
- for(var key in old){  //遍历old让新的替换老的
-                new[key] = old[key];
+ for(var key in old){  //遍历old
+                old[key] = new[key];   //让老的值得到新值
          }             
 ```
 + 第二段階　(编写上层调用)
@@ -152,7 +152,7 @@ exports.find = function (findCb) {
         if(error){
           return findCb(error,null)   //这俩参是回调函数里的参数 前判断 后渲染
         }else{
-          return  findCb(null,JSON.parse(data).students);
+          return  findCb(null,JSON.parse(data).students);  //返回一个cb且里面有要render的data
         }
     })
 }
@@ -251,3 +251,6 @@ exports.delete = function (id,cb) {
 
 module.exports = exports;  //给他们导出
 ```
+
+![IMG_0B1C9977CE9D-1 2](./IMG_0B1C9977CE9D-1 2.jpeg)
+
