@@ -1,0 +1,20 @@
+var p1 = new Promise(function (resolve, reject) {
+    resolve("success1")
+    resolve("success2")
+})
+
+var p2 = new Promise(function (resolve, reject) {
+    resolve("success3")
+    reject("reject")
+})
+
+p1.then(function (val) {
+    console.log(val);
+});
+p2.then(function (val) {
+    console.log(val);
+})
+
+// success1
+// success3
+

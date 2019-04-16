@@ -141,7 +141,8 @@ stuModel.findOne({},"name age address -_id",{limit:3,skip:3},function (error,doc
     doc.age
    //set  设置doc的属性值     doc.set("age" , 12);       db不变
     doc.age = 12; 
-   //id/_id  
+   
+    //id/_id  
     doc.id  === doc._id
    
     
@@ -161,6 +162,30 @@ var stu = stu.toObject();
 delete stu.address;        //不到这是啥  只能删普通js obj的属性 所以删不了doc obj的属性
 console.log(stu);     
 ```
+
+<hr>
+
+###  其他method
+
+```javascript
+Model.findOneAndRemove ( condition , [options] , [cb] )
+Model.findOneByIdAndRemove ( id , [options] , [cb] )
+//直接 .id 不用 ._id
+```
+
+```
+Model.findOneAndUpdate ( [condition] , [update] , [options] , [cb] )
+```
+
+```javascript
+//////////常用
+new stuModel( req.body ).save( cb );
+stuModel.findById( id , cb)
+stuModel.findByIdAndUpdate(id , update , cb)
+stuModel.findByIdAndDelete(id ,cb)
+```
+
+
 
 
 
