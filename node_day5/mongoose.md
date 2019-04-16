@@ -185,7 +185,7 @@ stuModel.findByIdAndUpdate(id , update , cb)
 stuModel.findByIdAndDelete(id ,cb)
 ```
 
-
+补：mongoose api 全部支持promise
 
 
 
