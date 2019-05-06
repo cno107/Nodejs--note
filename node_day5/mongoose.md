@@ -50,6 +50,7 @@ mongoose.connection.once("open",function () {                        //connect s
       },
       address:String
   });
+  //module.exports = mongoose.model('user',usrSchema);  封装
   ```
 
 + **Model**
@@ -122,7 +123,7 @@ stuModel.count( [condition] , [cb] )
 ```javascript
 // create a doc   并没有加的db
 var stuModel = mongoose.model("foot",stuSchema); 
-var stu = new stuModel({
+var stu = new stuModel({    //也可以传req.body  req.query这样的obj
     name:'phb',
     age:'20',
     address:'china'

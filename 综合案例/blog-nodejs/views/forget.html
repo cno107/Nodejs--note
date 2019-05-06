@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>forget</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/login.css">
+</head>
+
+<body>
+<div class="main">
+    <div class="header">
+        <a href="/">
+            <img src="/public/img/logo3.png" alt="">
+        </a>
+        <h1>パスワード取り戻す</h1>
+    </div>
+    <form id="forget_form" action="/forget" method="post">
+        <div class="form-group">
+            <label for="">メール</label>
+            <input type="email" class="form-control" id="" name="email" placeholder="Email" autofocus>
+        </div>
+
+
+        <button type="submit" class="btn btn-success btn-block">メール発送する</button>
+    </form>
+    <div class="message">
+        <p>アカウントがない? <a href="/register">click to create</a>.</p>
+    </div>
+    <div class="message">
+        <p>パスワード思い出した? <a href="/login">click to login</a>.</p>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<script>
+    $('#forget_form').on('submit', function (e) {
+        e.preventDefault()
+        var formData = $(this).serialize()
+        console.log(formData)
+        $.ajax({
+            url: '/forget',
+            type: 'post',
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                var err_code = data.err_code
+                if (err_code === 0) {
+                    window.alert('発送成功！');
+                    window.alert('please check your mail box');
+                    // 服务端重定向针对异步请求无效
+                    window.location.href = '/login'
+                } else if (err_code === 1) {
+                    window.alert('email 存在しない')
+                } else if (err_code === 500) {
+                    window.alert('server error')
+                }
+            }
+        })
+    })
+</script>
+</body>
+
+</html>

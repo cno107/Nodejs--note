@@ -1,0 +1,77 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  {{include '../_partials/settings-nav.html'}}
+  <div class="col-md-5">
+    <div class="subhead">
+      <h2>パスワード変更</h2>
+    </div>
+    <hr>
+    <form method="post" action="password" id="password-form">
+      <div class="form-group">
+        <label >current password</label>
+        <input type="password" class="form-control" name="current" placeholder="">
+      </div>
+      <div class="form-group">
+        <label >New password</label>
+        <input type="password" class="form-control" name="new" placeholder="">
+      </div>
+      <div class="form-group">
+        <label >confirm password</label>
+        <input type="password" class="form-control" name="confirm" placeholder="">
+      </div>
+      <button type="submit" class="btn btn-success">保存</button>
+    </form>
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script>
+      $('#password-form').on('submit', function (e) {
+        e.preventDefault()
+        var formData = $(this).serialize()
+        console.log(formData)
+        $.ajax({
+          url: '/settings/password',
+          type: 'post',
+          data: formData,
+          dataType: 'json',
+          success: function (data) {
+            var code = data.err_code
+            if (code === 0) {
+              alert('パスワード変更 成功！！！')
+              window.location.href = '/login'
+            }else if(code === 3){
+              alert('current password is wrong');
+            }else if(code === 4){
+              alert('new password と　confirm password同じじゃない');
+            }
+          }
+        })
+      })
+    </script>
+    <div class="subhead">
+      <h2>アカウント削除</h2>
+      <hr>
+    </div>
+    <div>
+      <p>危険操作！！！！！！</p>
+      <button  class="btn btn-danger" id="del-btn">Delete</button>
+      <script >
+        var delBtn = document.getElementById('del-btn');
+         delBtn.onclick = function () {
+           var msg = 'Are you sure to delete your account???';
+          if(confirm(msg) === true){
+            window.location.href = '/delete'  //转到后台去处理  （删除usr db）
+          }else{
+            return false;
+          }
+
+         }
+      </script>
+
+    </div>
+    <hr>
+  </div>
+</section>
+{{/block}}

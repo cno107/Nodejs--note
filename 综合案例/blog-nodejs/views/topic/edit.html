@@ -1,0 +1,50 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form action="edit_submit" method="post" id="article_change_form">
+
+                <div class="form-group">
+                    <input hidden name="id" value="{{article._id}}">
+                    <label for="exampleInputEmail1" >title</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" value="{{article.articleName}}" name="articleName">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">content</label>
+                    <textarea class="form-control" rows="20" name="article" >{{article.article}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <script src="/node_modules/jquery/dist/jquery.js"></script>
+            <script>
+                $('#article_change_form').on('submit', function (e) {
+                    e.preventDefault()
+                    var formData = $(this).serialize()
+                    $.ajax({
+                        url: '/edit_submit',
+                        type: 'post',
+                        data: formData,
+                        dataType: 'json',
+                        success:function (data) {
+
+                            var code = data.err_code;
+                            if(code === 0){
+                                window.alert('編集成功');
+                                window.location.href = '/';
+                            }
+                            if(code === 500){
+                                window.alert('server error');
+                            }
+                        }
+
+                    })
+                })
+            </script>
+        </div>
+    </div>
+</section>
+{{/block}}

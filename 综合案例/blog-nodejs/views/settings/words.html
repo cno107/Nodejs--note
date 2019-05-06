@@ -1,0 +1,28 @@
+{{extend '../_layouts/home.html'}}
+
+{{block 'title'}}{{'多人博客 - 首页'}}{{/block}}
+
+{{block 'body'}}
+<section class="container">
+    {{include '../_partials/settings-nav.html'}}
+    <div class="col-md-5">
+        <ul class="media-list">
+            {{each art}}
+            <li class="media">
+                <div class="media-left">
+                    <a href="/edit?id={{$value._id}}"><button   class="btn btn-success">編集</button></a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading"><a href="/show1?id={{$value._id}}">{{$value.articleName}}</a></h4>
+                    <p>Written by <b style="color:hotpink">{{$value.nickname}}</b> • 発表時間 : <b>{{$value.create_time}}</b>
+
+                    </p>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+
+        <hr>
+    </div>
+</section>
+{{/block}}
